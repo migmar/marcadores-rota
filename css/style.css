@@ -1,0 +1,33 @@
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#map-canvas {
+   margin: 0;
+   padding: 0;
+	height: 600px;
+   max-width: none;
+}
+#map-canvas img {
+   max-width: none !important;
+}
+.infoWindow {
+   width: 150px;
+}
+#left-column {
+   background-color: white;
+   display: none;
+   position: fixed;
+   top: 50px;
+   left: 10px;
+   width: 200px;
+   height: 700px;
+   margin: 0;
+   padding: 0;
+   z-index: 9999;
+   overflow: auto;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8">
+    <title>Miuller map</title>
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Exemplo de um mapa com um marcador simples com Google Maps JavaScript API v3">
+    <meta name="author" content="Miguel Marnoto">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="js/map.js"></script> 
+</head>
+<body>
+  <div class="container">
+    <div>
+	    Distância <input type="text" id="amountDistance" value="15000">	 
+		  Lat: <input type="text" id="lat" value="-17.721890"> 
+		  Lng: <input type="text" id="lng" value="-49.124000">
+		  <button type="button" onClick="newSearch()">Initialize</button>
+	 </div>
+    <div id="map-canvas"></div>
+    <div id="left-column">
+        <div id="directions-panel">
+            <span>Como chegar lá </span>
+            <select id="mode" onChange="calcRoute();">
+              <option value="DRIVING">de carro</option>
+              <option value="WALKING">a pé</option>
+            </select>
+        </div>
+    </div>
+  </div><!-- /container -->
+</body>
+</html>
