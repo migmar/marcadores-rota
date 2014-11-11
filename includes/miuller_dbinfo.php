@@ -1,5 +1,5 @@
 <?php
-$username="root";
-$password="";
-$database="cipm";
+$username="username";
+$password="password";
+$database="dbname";
 ?>
