@@ -9,7 +9,7 @@
     <meta name="author" content="Miguel Marnoto">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&region=BR&language=br&libraries=places"></script>
     <script type="text/javascript" src="js/map.js"></script> 
 </head>
 <body>
@@ -19,6 +19,14 @@
 		  Lat: <input type="text" id="lat" value="-17.721890"> 
 		  Lng: <input type="text" id="lng" value="-49.124000">
 		  <button type="button" onClick="newSearch()">Initialize</button>
+      <form id="top_search">
+          <div>
+            <input type="text" id="addressInput" placeholder="pesquisar em morrinhos">
+            <input type="radio" name="opcaoPesquisa" id="opAll" value="opAll" checked>Tudo
+            <input type="radio" name="opcaoPesquisa" id="opGeocode" value="opGeocode">Endereço <!-- Pesquisa por endereços -->
+            <input type="radio" name="opcaoPesquisa" id="opEstablishment" value="opEstablishment">POI <!-- Pesquisa por Pontos de Interesse -->
+          </div>
+      </form>
 	 </div>
     <div id="map-canvas"></div>
     <div id="left-column">
