@@ -1,6 +1,6 @@
 <?php  
 
-  require("miuller_dbinfo.php");
+  require("../../miuller_dbinfo.php");
 
   // Get parameters from URL
   $center_lat = $_GET["lat"];
