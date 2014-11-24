@@ -52,6 +52,7 @@ function initialize() {
 
 	// coloca o mapa no DIV map_canvas com as opções definidas em myoptions
 	map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+
 	/*
 	 * -------------------------------------------
 	 * START POSITION
@@ -71,6 +72,7 @@ function initialize() {
 	 * Sets a new google.maps.InfoWindow to infoWindow
 	 * --------------------------------------------
 	 */
+
 	infoWindow = new google.maps.InfoWindow();
 	/*
 	 * -------------------------------------------
@@ -78,16 +80,106 @@ function initialize() {
 	 * 
 	 * --------------------------------------------
 	 */
+
 	google.maps.event.addListener(map, 'click', function() {
 		infoWindow.close();
 	});
+
 	/*
 	 * -------------------------------------------
 	 * DIRECTIONS
 	 * Identifica o DIV para inserir as direcções
 	 * --------------------------------------------
 	 */
+
 	directionsDisplay.setPanel(document.getElementById('left-column'));
+
+	/*
+	 * ------------------------------------------------------------
+	 * AUTOCOMPLETE
+	 *
+	 * AutoComplete Vars for search input
+	 *-------------------------------------------------------------
+	*/
+
+	var searchInput = document.getElementById('addressInput');
+
+	/*
+	 * Estes valores limitam a pesquisa a uma área aproximada dos limites de Morrinhos.
+	 * Isto é importante para que não apareçam nomes de ruas de outros estados ou mesmo 
+	 * de outros países.
+	 + É importante não esquecer de verificar se estes limites estão correctos
+	 */
+	var defaultBounds = new google.maps.LatLngBounds(
+		new google.maps.LatLng(-17.464966, -49.481221),
+		new google.maps.LatLng(-18.109630, -48.808308));
+
+	var optionsAutoCompl = {
+		bounds: defaultBounds,
+		types: [], //'establishment','geocode','(regions)','(cities)'
+		componentRestrictions: { country: 'br' }
+	};
+
+	var autocomplete = new google.maps.places.Autocomplete(searchInput, optionsAutoCompl);
+
+
+	/*
+	* -------------------------------------------------------------
+	* AUTOCOMPLETE LISTENER
+	*
+	* Este evento é despoletado quando o utilizador selecciona uma morada da lista gerada pelo autocomplete
+	* -------------------------------------------------------------
+	*/
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		
+		infoWindow.close(); // se o user deixou alguma infowindow aberta
+
+		var place = autocomplete.getPlace(); // procurar o local pesquisado pelo user
+
+			if (!place.geometry) {
+				
+				// Se não foi encontrada nenhuma morada no autocomplete então finaliza a função
+				alert("Não exitem moradas disponíveis para a pesquisa pretendida.")
+				return;
+			}
+
+			// If the place has a geometry, then present it on a map.
+			if (place.geometry.viewport) {
+
+				map.fitBounds(place.geometry.viewport);
+
+			} else {
+
+				// executa a função que efetua a pesquisa na base de dados
+				// dos POI com base na localização definida no campo de
+				// pesquisa através do autocomplete
+				searchLocationsNear(place.geometry.location);
+			}
+	});
+
+
+	/*
+	 * -------------------------------------------
+	 * AUTOCOMPLETE OPTIONS
+	 * 
+	 * Sets a listener on a dropdown menu (Opções de pesquisa) to
+	 * change the filter type on Places Autocomplete.
+	 *--------------------------------------------
+	 */
+
+	function clickListnerAutoComp(id, types) {
+		var autocompType = document.getElementById(id);
+		google.maps.event.addDomListener(autocompType, 'click', function() {
+			autocomplete.setTypes(types);
+		});
+	}
+
+	clickListnerAutoComp('opAll', []);
+	clickListnerAutoComp('opGeocode', ['geocode']);
+	clickListnerAutoComp('opEstablishment', ['establishment']);
+
+
 	/*
 	 * -------------------------------------------
 	 * FIRST CALL TO DATABASE
@@ -96,8 +188,10 @@ function initialize() {
 	 */
 	searchLocationsNear(myOptions.center);
 }
+
 // call initialize() after dom load
 google.maps.event.addDomListener(window, 'load', initialize);
+
 /*
 * -------------------------------------------------------------------------
 * DIRECTIONS
